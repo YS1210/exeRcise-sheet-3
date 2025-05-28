@@ -90,6 +90,7 @@ For small datasets like these adding them to git is not a problem.
 ```{r setup, include=FALSE}
 library(readr)
 library(dplyr)
+library(ggplot2)
 ```
 
 
@@ -101,7 +102,6 @@ a)  Load the `pixar_films` dataset into R. Clean the dataset by removing
 pixar_films <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-11/pixar_films.csv')
 pixar_films <- pixar_films %>% 
   filter(!is.na(film) & film != "")
-head(pixar_films)
 unique(pixar_films$film_rating)
 pixar_films <- pixar_films %>%
   mutate(film_rating_factor = factor(film_rating))
@@ -144,6 +144,19 @@ c)  Load the `public_response` dataframe into R. Convert the
     levels are defined in ascending order, from the lowest to the
     highest score. Combine `public_response` with the `pixar_films`
     dataset using an appropriate merge variable.
+    
+```{r}
+public_response <-read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-11/public_response.csv')
+unique(public_response$cinema_score)
+```
+
+```{r}
+score_levels <- c("A-", "A", "A+")
+public_response <- public_response %>%
+  mutate(cinema_score = factor(cinema_score, levels = score_levels, ordered = TRUE))
+combined_data <- merge(pixar_films, public_response, by = "film", all.x = TRUE)
+summary(combined_data)
+```
 
 d)  Choose one of the variables representing the public response and
     create a bar plot for the films belonging to a series. Here are the
@@ -159,6 +172,51 @@ d)  Choose one of the variables representing the public response and
 
     What do you notice when comparing the scores of the films in a
     series? Do you see any patterns?
+    
+```{r}
+series_info <- data.frame(
+  film = c("Toy Story", "Toy Story 2", "Toy Story 3", "Toy Story 4",
+           "Cars", "Cars 2", "Cars 3",
+           "Monsters, Inc.", "Monsters University",
+           "Finding Nemo", "Finding Dory",
+           "The Incredibles", "Incredibles 2"),
+  series = c(rep("Toy Story", 4),
+             rep("Cars", 3),
+             rep("Monsters", 2),
+             rep("Finding", 2),
+             rep("Incredibles", 2)),
+  stringsAsFactors = FALSE
+)
+combined_data <- merge(combined_data, series_info, by = "film", all.x = TRUE)
+avg_rotten_tomatoes <- combined_data %>%
+  filter(!is.na(series), !is.na(rotten_tomatoes)) %>%
+  group_by(series) %>%
+  summarise(
+    rotten_tomatoes_score = mean(rotten_tomatoes, na.rm = TRUE),
+    films = paste(film, collapse = ", "),
+    count = n(),
+    .groups = "drop"
+  )
+print(avg_rotten_tomatoes[, c("series", "rotten_tomatoes_score")])
+plot_data <- combined_data %>%
+  filter(!is.na(series), !is.na(rotten_tomatoes)) %>%
+  arrange(series, release_date) %>%
+  group_by(series) %>%
+  mutate(order = row_number()) %>%
+  ungroup()
+plot_data$film_label <- paste0(plot_data$series, " - ", plot_data$film)
+ggplot(plot_data, aes(x = reorder(film, release_date), y = rotten_tomatoes, fill = series)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ series, scales = "free_x") +
+  labs(
+    title = "Rotten Tomatoes Scores by Film Series",
+    x = "Film",
+    y = "Rotten Tomatoes (%)"
+  ) +
+  ylim(0, 100) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ## Exercise 4: Open Analysis (4 points)
 
