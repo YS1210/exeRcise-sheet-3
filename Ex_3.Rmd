@@ -101,6 +101,7 @@ a)  Load the `pixar_films` dataset into R. Clean the dataset by removing
 pixar_films <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-11/pixar_films.csv')
 pixar_films <- pixar_films %>% 
   filter(!is.na(film) & film != "")
+head(pixar_films)
 unique(pixar_films$film_rating)
 pixar_films <- pixar_films %>%
   mutate(film_rating_factor = factor(film_rating))
