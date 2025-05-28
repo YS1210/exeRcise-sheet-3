@@ -1,7 +1,7 @@
 ---
-title: "Exercise #X"
+title: "Exercise #3"
 subtitle: "Fortgeschrittene Statistische Software für NF"
-author: "Name (Martrikelnummer), Name (Martrikelnummer), ..."
+author: "Yuhao Sun(12530170)"
 date: "`r Sys.Date()`"
 output: distill::distill_article
 ---
@@ -51,6 +51,7 @@ d)  Name 2 strengths and 2 weaknesses of git. (Don't forget to create a
 
 - Very hard to lose files with git
 - Great for collaboration
+
 **Weakness** 
 
 - Can be a bit complicated to use
@@ -70,6 +71,7 @@ a)  Create a new repository on GitHub in your account named
     `exeRcise-sheet-3`. Make sure you create a **public repository** so
     we are able to see it for grading. Add the link to the repository
     below:
+https://github.com/YS1210/exeRcise-sheet-3.git
 b)  Push your code to this new repository by copying and executing the
     snippet on github listed under
     `…or push an existing repository from the command line`.
