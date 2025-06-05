@@ -88,12 +88,28 @@ Link:
 
 For small datasets like these adding them to git is not a problem.
 
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
 a)  Load the `pixar_films` dataset into R. Clean the dataset by removing
     films without a title. Inspect the variable `film_rating`. What are
     the possible values and what do they mean? Create a factor variable
     for the film rating. Why is this appropriate?
-
+```{r}
+pixar_films <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-11/pixar_films.csv')
+pixar_films <- pixar_films %>% 
+  filter(!is.na(film) & film != "")
+unique(pixar_films$film_rating)
+pixar_films <- pixar_films %>%
+  mutate(film_rating_factor = factor(film_rating))
+```
 <!-- -->
+>The film_rating column contains "G", "PG", and "N/A".
+>These values represent the movie's age rating.
+>Film_rating is converted into a factor because it is a categorical variable.
 
 b)  Inspect the film titles manually. Which films form a film series? A
     film series can be identified by a common word in the titles of the
