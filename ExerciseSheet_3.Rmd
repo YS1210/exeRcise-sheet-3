@@ -168,6 +168,39 @@ d)  Choose one of the variables representing the public response and
 
     What do you notice when comparing the scores of the films in a
     series? Do you see any patterns?
+    
+    
+```{r}
+series_info <- data.frame(
+  film = c("Toy Story", "Toy Story 2", "Toy Story 3", "Toy Story 4",
+           "Cars", "Cars 2", "Cars 3",
+           "Monsters, Inc.", "Monsters University",
+           "Finding Nemo", "Finding Dory",
+           "The Incredibles", "Incredibles 2"),
+  series = c(rep("Toy Story", 4),
+             rep("Cars", 3),
+             rep("Monsters", 2),
+             rep("Finding", 2),
+             rep("Incredibles", 2)),
+  stringsAsFactors = FALSE
+)
+combined_data <- merge(combined_data, series_info, by = "film", all.x = TRUE)
+plot_data <- combined_data %>%
+  filter(!is.na(series), !is.na(metacritic)) %>%
+  arrange(series, release_date) %>%
+  mutate(film = factor(film, levels = unique(film)))
+ggplot(plot_data, aes(x = series, y = metacritic, fill = film)) +
+  geom_col(position = position_dodge()) +
+  labs(
+    title = "Metacritic Scores by Film Series",
+    x = "Film Series",
+    y = "Metacritic",
+    fill = "Film"
+  ) +
+  ylim(0, 100)
+```
+
+> In most Pixar film series,the scores tend to decrease with each new release.  
 
 ## Exercise 4: Open Analysis (4 points)
 
