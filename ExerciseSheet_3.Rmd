@@ -230,6 +230,24 @@ e)  Use R to answer your chosen question. Please limit your analysis to
     the functions and techniques we have covered so far in the course.
     You are **not expected** to use advanced statistical models or
     external packages which haven't been introduced.
+    
+```{r}
+covid_data <- read.csv("YouGov-Imperial COVID-19 Behavior Tracker.csv", stringsAsFactors = FALSE)
+covid_data$avoided_crowded_areas  <- as.numeric(covid_data$avoided_crowded_areas)  
+model <- lm(willingness_covid_vaccinate_this_week ~
+              trust_covid_vaccines +
+              mask_outside_home +
+              avoided_crowded_areas +
+              government_responded_well,
+            data = covid_data,
+            na.action = na.omit)
+summary(model)
+```    
+
+>Surprisingly, wearing masks outside and trust in vaccines both show a negative effect on willingness to vaccinate. This may be because these group of people are already vaccinated and no longer report willingness.  
+>People are more willing to get vaccinated when they avoid public spaces.
+>Trust in government shows a small positive effect, but the overall influence varies.
+
 f)  Create a meaningful plot / figure with the dataset. Make sure to
     provide a figure caption (via the chunk options / Rmarkdown) and
     correctly label the figure.
