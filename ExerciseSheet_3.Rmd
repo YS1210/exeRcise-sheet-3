@@ -107,9 +107,9 @@ pixar_films <- pixar_films %>%
   mutate(film_rating_factor = factor(film_rating))
 ```
 <!-- -->
->The film_rating column contains "G", "PG", and "N/A".
->These values represent the movie's age rating.
->Film_rating is converted into a factor because it is a categorical variable.
+  >The film_rating column contains "G", "PG", and "N/A".
+  >These values represent the movie's age rating.
+  >Film_rating is converted into a factor because it is a categorical variable.
 
 b)  Inspect the film titles manually. Which films form a film series? A
     film series can be identified by a common word in the titles of the
@@ -200,8 +200,7 @@ ggplot(plot_data, aes(x = series, y = metacritic, fill = film)) +
   ylim(0, 100)
 ```
 
-> In most Pixar film series,the scores tend to decrease with each new release.  
-
+  > In most Pixar film series,the scores tend to decrease with each new release.  
 ## Exercise 4: Open Analysis (4 points)
 
 This exercise is a bit more open-ended. You can choose any dataset from
@@ -222,9 +221,9 @@ d)  Come up with a (research) question you want to answer with the data
     within one sentence. It should be a question that can be answered
     with the dataset and using R.
     
->**Question**: What factors influence people's willingness to get vaccinated against COVID-19?
+  >**Question**: What factors influence people's willingness to get vaccinated    against COVID-19?
 
-> **Why it's interesting:** This question helps us understand what makes people say yes or no to vaccines.
+  > **Why it's interesting:** This question helps us understand what makes        people say yes or no to vaccines.
 
 e)  Use R to answer your chosen question. Please limit your analysis to
     the functions and techniques we have covered so far in the course.
@@ -244,13 +243,28 @@ model <- lm(willingness_covid_vaccinate_this_week ~
 summary(model)
 ```    
 
->Surprisingly, wearing masks outside and trust in vaccines both show a negative effect on willingness to vaccinate. This may be because these group of people are already vaccinated and no longer report willingness.  
->People are more willing to get vaccinated when they avoid public spaces.
->Trust in government shows a small positive effect, but the overall influence varies.
+  >Surprisingly, wearing masks outside and trust in vaccines both show a          negative effect on willingness to vaccinate. This may be because these group    of people are already vaccinated and no longer report willingness.  
+  >People are more willing to get vaccinated when they avoid public spaces.
+  >Trust in government shows a small positive effect, but the overall influence   varies.
 
 f)  Create a meaningful plot / figure with the dataset. Make sure to
     provide a figure caption (via the chunk options / Rmarkdown) and
     correctly label the figure.
+
+```{r vaccine-plot, fig.cap="The plot shows the relationship between trust in vaccines and willingness to get vaccinated."}
+plot(covid_data$trust_covid_vaccines,
+     covid_data$willingness_covid_vaccinate_this_week,
+     main = "Trust in Vaccines vs Willingness to Vaccinate",
+     xlab = "Trust in COVID Vaccines (%)",
+     ylab = "Willingness to Vaccinate This Week (%)",
+     col = "blue", pch = 16)
+valid_rows <- complete.cases(covid_data$trust_covid_vaccines, covid_data$willingness_covid_vaccinate_this_week)
+abline(lm(willingness_covid_vaccinate_this_week ~ trust_covid_vaccines,
+          data = covid_data[valid_rows, ]),
+       col = "red")
+```
+
+  > **Figure \@ref(fig:vaccine-plot)** shows how vaccine trust relates to         willingness to vaccinate.
 
 ## Final Note
 
