@@ -118,6 +118,23 @@ b)  Inspect the film titles manually. Which films form a film series? A
     displays a list of the different series with the titles of the films
     and how many films belong to the series. Output the dataframe.
 
+```{r}
+unique(pixar_films$film)
+series_df <- data.frame(
+  series = c("Toy Story", "Cars", "Monsters", "Finding", "Incredibles"),
+  titles = c(
+    "Toy Story, Toy Story 2, Toy Story 3, Toy Story 4",
+    "Cars, Cars 2, Cars 3",
+    "Monsters, Inc., Monsters University",
+    "Finding Nemo, Finding Dory",
+    "The Incredibles, Incredibles 2"
+  ),
+  count = c(4, 3, 2, 2, 2),
+  stringsAsFactors = FALSE
+)
+print(series_df)
+```
+
 c)  Load the `public_response` dataframe into R. Convert the
     `cinema_score` variable into a factor while ensuring the factor
     levels are defined in ascending order, from the lowest to the
